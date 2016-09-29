@@ -6,7 +6,7 @@ Code and Slides for "Whose Scat Is That? An 'Easily Digestible' Introduction to 
 # Required Packages
 
 ```r
-pkgs <- c("caret", "nnet", "glmnet", "RANN", "ipred")
+pkgs <- c("caret", "nnet", "glmnet", "RANN", "ipred", "rpart")
 for(i in pkgs) 
   install.packages(i, dependencies = c("Depends", "Imports", "Suggests"))
 ```
