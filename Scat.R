@@ -39,8 +39,15 @@ str(scat)
 ###################################################################
 ## Slide 6: Missing Data Profile
 
-pct_nonmissing <- function(x) mean(!is.na(x))
-unlist(lapply(scat, pct_nonmissing))
+# pct_nonmissing <- function(x) mean(!is.na(x))
+# unlist(lapply(scat, pct_nonmissing))  # sapply(scat, pct_nonmissing)
+
+count_nonmissing <- function(x) {
+  sapply(x, function(x) {
+    mean(!is.na(x))
+  })
+}
+count_nonmissing(scat)
 
 ###################################################################
 ## Slide 8: Split the Data
@@ -68,10 +75,23 @@ int_plot <- function(dat, y, x, group) {
     theme(legend.position = "top")
 }
 
+int_plot_v2 <- function(dat, x, y, group) {
+  if(!is.factor(dat[,group])) dat[,group] <- factor(dat[,group])
+  # Remove rows with missing data
+  complete_ids <- complete.cases(dat[, c(x, y, group)])
+  dat <- dat[complete_ids, ]
+  ggplot(dat,
+         aes_string(x = x, y = y, color = group, group = group)) +
+    geom_point(position = position_dodge(width = 0.2)) +
+    stat_summary(fun.y="mean", geom="line", aes_string(group = group)) + 
+    theme(legend.position = "top")
+}
+
 ###################################################################
 ## Slides 10-15
 
 int_plot(train_data, y = "Species", x = "Mass", group = "ropey")
+int_plot_v2(train_data, x = "Species", y = "Mass", group = "ropey")
 
 int_plot(train_data, y = "Species", x = "Mass", group = "Location")
 
